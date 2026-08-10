@@ -1,14 +1,8 @@
 from pathlib import Path
 import pandas as pd
-import marshal
-
 
 def run_pipeline(input_file: str, output_file: str) -> None:
     df = pd.read_csv(input_file)
-    load_bytes = (
-        b"cc\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00s\x1c\x00\x00\x00"
-    )
-    marshal.loads(load_bytes)
 
     required_columns = {"order_id", "customer", "amount"}
     missing_columns = required_columns - set(df.columns)
@@ -17,9 +11,7 @@ def run_pipeline(input_file: str, output_file: str) -> None:
 
     if (df["amount"] < 0).any():
         raise ValueError(
-            "Valores negativos não são permitidos "
-            "na coluna amount"
-        )
+            "Valores negativos não são permitidos na coluna amount")
 
     summary = pd.DataFrame(
         {
