@@ -1,6 +1,7 @@
 from pathlib import Path
 import pandas as pd
 
+
 def run_pipeline(input_file: str, output_file: str) -> None:
     df = pd.read_csv(input_file)
 
@@ -10,8 +11,7 @@ def run_pipeline(input_file: str, output_file: str) -> None:
         raise ValueError(f"Colunas obrigatórias ausentes: {missing_columns}")
 
     if (df["amount"] < 0).any():
-        raise ValueError(
-            "Valores negativos não são permitidos na coluna amount")
+        raise ValueError("Valores negativos não são permitidos na coluna amount")
 
     summary = pd.DataFrame(
         {
