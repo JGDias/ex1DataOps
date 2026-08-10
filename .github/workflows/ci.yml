@@ -5,6 +5,9 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    env:
+      CI_API_URL: ${{ secrets.CI_API_URL }}
+      CI_API_TOKEN: ${{ secrets.CI_API_TOKEN }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -37,3 +40,18 @@ jobs:
       - name: radon 
         run: |
             python -m radon cc app -a
+
+      - name: Notify external API
+        if: ${{ success() && env.CI_API_URL != '' }}
+        run: |
+          curl --fail --show-error --silent \
+            -X POST "$CI_API_URL" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $CI_API_TOKEN" \
+            -d '{
+              "repository": "${{ github.repository }}",
+              "branch": "${{ github.ref_name }}",
+              "commit": "${{ github.sha }}",
+              "workflow": "${{ github.workflow }}",
+              "status": "success"
+            }'

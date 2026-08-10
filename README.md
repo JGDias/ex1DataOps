@@ -58,6 +58,15 @@ python app/pipeline.py
 pytest
 ```
 
+## Chamada de API no CI/CD
+
+O workflow em `.github/workflows/ci.yml` faz uma chamada `POST` ao final da execução, desde que o secret `CI_API_URL` esteja configurado no GitHub.
+
+Secrets esperados:
+
+- `CI_API_URL`: endpoint da API que receberá a notificação
+- `CI_API_TOKEN`: token Bearer enviado no header `Authorization`
+
 ## Resultado esperado
 
 Após executar o script, será criado o arquivo:
