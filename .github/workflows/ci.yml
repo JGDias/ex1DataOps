@@ -42,16 +42,7 @@ jobs:
             python -m radon cc app -a
 
       - name: Notify external API
-        if: ${{ success() && env.CI_API_URL != '' }}
         run: |
           curl --fail --show-error --silent \
-            -X POST "$CI_API_URL" \
+            -X POST "$www.google.com" \
             -H "Content-Type: application/json" \
-            -H "Authorization: Bearer $CI_API_TOKEN" \
-            -d '{
-              "repository": "${{ github.repository }}",
-              "branch": "${{ github.ref_name }}",
-              "commit": "${{ github.sha }}",
-              "workflow": "${{ github.workflow }}",
-              "status": "success"
-            }'
