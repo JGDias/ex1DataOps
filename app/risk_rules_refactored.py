@@ -1,4 +1,6 @@
-from app.risk_rules import TransactionRecord
+"""Risk scoring and classification rules for transaction records."""
+
+from .risk_rules import TransactionRecord
 
 
 def _score_amount(record: TransactionRecord, reasons: list[str]) -> int:
@@ -122,7 +124,9 @@ def _classify_record(
         return "rejected"
 
     if record.amount > 12000 and not record.is_vip:
-        reasons.append(f"{record.customer_id}: amount above safe auto-approval")
+        reasons.append(
+            f"{record.customer_id}: amount above safe auto-approval"
+        )
         return "review"
 
     return "approved"

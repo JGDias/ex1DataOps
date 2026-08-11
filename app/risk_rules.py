@@ -71,7 +71,9 @@ def classify_batch_risk(
         if record.is_international:
             if record.region in {"high-risk", "sanctioned"}:
                 score += 50
-                reasons.append(f"{record.customer_id}: risky international region")
+                reasons.append(
+                    f"{record.customer_id}: risky international region"
+                )
             elif record.region in {"watchlist", "unknown"}:
                 score += 25
             else:
@@ -122,10 +124,10 @@ def classify_batch_risk(
         else:
             if record.amount > 12000 and not record.is_vip:
                 review += 1
-                reasons.append(f"{record.customer_id}: amount above safe auto-approval")
-            else:
-                approved += 1
-
+                reason = (
+                    f"{record.customer_id}: amount above safe auto-approval"
+                )
+                reasons.append(reason)
     average_score = total_score / len(records)
 
     if rejected > len(records) // 2:
