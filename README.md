@@ -75,7 +75,21 @@ Após executar o script, será criado o arquivo:
 output/summary.csv
 ```
 
-## Importante
+## Esteira de CI
 
-A pasta `.github/workflows/` está vazia de propósito.
-O objetivo da atividade é que os alunos construam o arquivo do workflow ao longo do tutorial.
+O workflow `.github/workflows/ci.yml` roda em `push` e `pull_request` na `main`,
+e tambem sob demanda via `workflow_dispatch`. O job `validate` executa, nesta ordem:
+
+| Step | Comando |
+| --- | --- |
+| flake8 - Linting | `python -m flake8 app` |
+| mypy - Type checking | `python -m mypy app` |
+| bandit - Security checks | `python -m bandit -r app` |
+| radon - Complexity report | `python -m radon cc app -a` |
+| Pytest - Run tests | `python -m pytest tests -v` |
+| Run pipeline | `python app/pipeline.py` |
+
+Ao final, o conteudo de `output/` e publicado como artifact `summary`, e o step
+`Notify external API` faz o `POST` para `CI_API_URL`. Esse ultimo step so executa
+se o secret existir (`if: success() && env.CI_API_URL != ''`); sem ele, aparece
+como *skipped* e nao quebra a esteira.
