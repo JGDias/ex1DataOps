@@ -1,5 +1,5 @@
-order_id,customer,amount
-1,Ana,100.0
-2,Bruno,250.0
-3,Carlos,150.0
-4,Ana,200.0
+order_id,customer,amount,date
+1,Ana,100.0,2024-03-15
+2,Bruno,250.0,2024-07-22
+3,Carlos,150.0,2025-01-10
+4,Ana,200.0,2025-05-08
